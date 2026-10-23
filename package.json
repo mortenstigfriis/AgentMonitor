@@ -12,7 +12,8 @@
     "build:client": "cd client && npm run build",
     "test": "cd server && npm test",
     "test:client": "cd client && npm test",
-    "licenses:audit": "node tools/audit-licenses.mjs"
+    "licenses:audit": "node tools/audit-licenses.mjs",
+    "licenses:notices": "node tools/generate-third-party-notices.mjs"
   },
   "devDependencies": {
     "concurrently": "^10.0.6"

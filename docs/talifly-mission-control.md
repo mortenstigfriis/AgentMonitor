@@ -17,6 +17,7 @@ cd server && npm ci --ignore-scripts && cd ..
 cd client && npm ci --ignore-scripts && cd ..
 npm run build:mission-control
 npm run licenses:audit
+npm run licenses:notices
 ```
 
 The server dependency install must not run the upstream automatic
@@ -54,6 +55,8 @@ The upstream AgentMonitor code remains covered by its MIT license; the root
 authoritative and installs use `--ignore-scripts`. The license audit checks all
 installed dependency manifests against the reviewed permissive/open-source
 allowlist and fails closed on unknown or newly introduced license expressions.
+`THIRD_PARTY_NOTICES.md` is generated from the server and client runtime
+lockfiles and packages the corresponding installed license texts.
 
 VitePress was removed from this operational fork because the Markdown files do
 not require a documentation-site runtime and its current dependency tree has
