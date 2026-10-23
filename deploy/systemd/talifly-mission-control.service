@@ -1,6 +1,7 @@
 [Unit]
 Description=Talifly AgentMonitor Mission Control
 After=network.target ai-team-mission-control.service
+Wants=ai-team-mission-control.service
 
 [Service]
 Type=simple
@@ -8,9 +9,13 @@ User=talifly
 Group=talifly
 WorkingDirectory=/home/talifly/projects/Talifly-AgentMonitor/server
 EnvironmentFile=/etc/talifly/mission-control.env
+Environment=NODE_ENV=production
 ExecStart=/usr/bin/node --jitless /home/talifly/projects/Talifly-AgentMonitor/server/dist/mission-control.js
 Restart=on-failure
 RestartSec=10
+MemoryMax=512M
+TasksMax=64
+CPUQuota=100%
 NoNewPrivileges=true
 PrivateTmp=true
 PrivateDevices=true
@@ -25,6 +30,10 @@ RestrictSUIDSGID=true
 LockPersonality=true
 MemoryDenyWriteExecute=true
 SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+IPAddressDeny=any
+IPAddressAllow=localhost
 UMask=0077
 
 [Install]

@@ -92,3 +92,39 @@ the Talifly deployment profile.
 All other Mission Control methods return `405`. The full AgentMonitor server
 entrypoint remains available for upstream comparison and tests, but it is not
 approved for Talifly deployment.
+
+## Isolated Hetzner installation
+
+Create an `A` record for a dedicated Mission Control hostname pointing to this
+engineering host. After DNS resolves, run the reviewed installer once:
+
+```bash
+sudo /home/talifly/projects/Talifly-AgentMonitor/deploy/install-mission-control.sh \
+  --domain mission-control.example.com \
+  --email operator@example.com
+```
+
+The installer fails before mutation unless both repositories are clean and
+contain the reviewed commits, DNS resolves to a local public IPv4 address, the
+adapter token is mode 0600, targets are unused and all standard host tools are
+present. It builds as `talifly`, installs the two hardened systemd units,
+obtains a Let's Encrypt certificate through the existing Nginx webroot pattern,
+enables login/general rate limits and verifies that unauthenticated HTTPS access
+is rejected with 401.
+
+The generated dashboard password is stored at:
+
+```text
+/home/talifly/.local/ai-team/mission-control.dashboard-password
+```
+
+It is owned by `talifly` with mode 0600. The adapter token, dashboard password,
+environment file and Orchestrator database are never committed.
+
+Rollback removes only the installed services, proxy and replaceable dashboard
+secret. It preserves repositories, Orchestrator state, adapter token and the
+issued certificate:
+
+```bash
+sudo /home/talifly/projects/Talifly-AgentMonitor/deploy/uninstall-mission-control.sh --confirm
+```

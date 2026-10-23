@@ -1,0 +1,15 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name __MISSION_CONTROL_DOMAIN__;
+    access_log off;
+    error_log /var/log/nginx/talifly-mission-control-error.log warn;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/talifly-mission-control-acme;
+        default_type text/plain;
+        try_files $uri =404;
+    }
+
+    location / { return 308 https://__MISSION_CONTROL_DOMAIN__$request_uri; }
+}
