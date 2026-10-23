@@ -38,9 +38,11 @@ export const config = {
   },
   /** Password for dashboard login (if empty, auth is disabled) */
   password: process.env.DASHBOARD_PASSWORD || '',
-  telegram: {
-    token: process.env.TELEGRAM_TOKEN || '',
-    chatId: process.env.TELEGRAM_CHAT_ID || '',
+  cookieSecure: process.env.COOKIE_SECURE === 'true',
+  missionControl: {
+    adapterUrl: process.env.TALIFLY_ADAPTER_URL || 'http://127.0.0.1:3460',
+    tokenFile: process.env.TALIFLY_ADAPTER_TOKEN_FILE
+      || '/home/talifly/projects/Talifly/.local/ai-team/mission-control.token',
   },
   feishu: {
     appId: process.env.FEISHU_APP_ID || '',

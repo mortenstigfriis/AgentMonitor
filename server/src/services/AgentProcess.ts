@@ -124,6 +124,13 @@ export class AgentProcess extends EventEmitter {
 
     this._pid = this.process.pid;
 
+    // Short-lived commands can close stdin before the initial prompt write.
+    // Handle the stream error explicitly so EPIPE cannot escape the process
+    // boundary as an uncaught exception or make the test result ambiguous.
+    this.process.stdin?.on('error', (err: NodeJS.ErrnoException) => {
+      if (err.code !== 'EPIPE') this.emit('error', err);
+    });
+
     // With --input-format stream-json, Claude waits for user messages on stdin.
     // Send the initial prompt immediately so processing starts right away.
     // stdin stays open so permission responses and follow-ups can be delivered.

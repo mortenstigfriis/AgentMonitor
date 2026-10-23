@@ -10,8 +10,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
+    "start:mission-control": "node dist/mission-control.js",
     "test": "vitest run",
-    "postinstall": "node scripts/ensure-opencli.mjs",
     "opencli:install": "node scripts/ensure-opencli.mjs"
   },
   "dependencies": {
@@ -27,8 +27,7 @@
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
     "node-pty": "^1.1.0",
-    "node-telegram-bot-api": "^0.67.0",
-    "nodemailer": "^6.9.16",
+    "nodemailer": "^10.2.1",
     "socket.io": "^4.8.1",
     "uuid": "^11.1.0",
     "ws": "^8.18.0"
@@ -41,12 +40,11 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.1.0",
     "@types/node": "^22.13.4",
-    "@types/node-telegram-bot-api": "^0.64.14",
     "@types/nodemailer": "^6.4.17",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.18.1",
     "tsx": "^4.19.3",
     "typescript": "^5.7.3",
-    "vitest": "^3.0.5"
+    "vitest": "^5.0.5"
   }
 }

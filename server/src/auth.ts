@@ -30,7 +30,8 @@ export function createAuthRoutes(): Router {
     const token = jwt.sign({ local: true }, getJwtSecret(), { expiresIn: JWT_EXPIRY });
     res.cookie('auth_token', token, {
       httpOnly: true,
-      sameSite: 'lax',
+      secure: config.cookieSecure,
+      sameSite: 'strict',
       path: '/',
       maxAge: 24 * 60 * 60 * 1000,
     });
@@ -56,7 +57,12 @@ export function createAuthRoutes(): Router {
 
   // POST /api/auth/logout
   router.post('/logout', (_req: Request, res: Response) => {
-    res.clearCookie('auth_token', { path: '/' });
+    res.clearCookie('auth_token', {
+      httpOnly: true,
+      secure: config.cookieSecure,
+      sameSite: 'strict',
+      path: '/',
+    });
     return res.json({ ok: true });
   });
 

@@ -1,11 +1,10 @@
 import type { Server, Socket } from 'socket.io';
 import type { AgentManager } from '../services/AgentManager.js';
 import type { TerminalService } from '../services/TerminalService.js';
-import type { TelegramService } from '../services/TelegramService.js';
 import type { Agent } from '../models/Agent.js';
 import { sanitizeAgentSnapshot } from '../utils/agentSnapshot.js';
 
-export function setupSocketHandlers(io: Server, manager: AgentManager, terminalService: TerminalService, telegramService?: TelegramService | null): void {
+export function setupSocketHandlers(io: Server, manager: AgentManager, terminalService: TerminalService): void {
   // Forward agent events to connected clients
   manager.on('agent:message', (agentId: string, msg: unknown) => {
     io.to(`agent:${agentId}`).emit('agent:message', { agentId, message: msg });
@@ -85,20 +84,6 @@ export function setupSocketHandlers(io: Server, manager: AgentManager, terminalS
 
     socket.on('terminal:close', (agentId: string) => {
       terminalService.destroy(agentId);
-    });
-
-    // Extension: reply to Telegram command
-    socket.on('telegram:reply', (data: { chatId: string; text: string; parseMode?: string }) => {
-      if (telegramService) {
-        telegramService.sendTg(data.chatId, data.text, data.parseMode);
-      }
-    });
-
-    // Extension: register additional Telegram commands
-    socket.on('telegram:register', (data: { commands: Array<{ command: string; description: string }> }) => {
-      if (telegramService) {
-        telegramService.registerExtensionCommands(data.commands);
-      }
     });
   });
 }
